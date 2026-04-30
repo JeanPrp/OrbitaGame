@@ -51,16 +51,21 @@ public class GameManager : MonoBehaviour
         {
             GameObject fallbackPanel = GameObject.Find("GameOverPanel");
             if (fallbackPanel != null)
+            {
                 gameOverPanel = fallbackPanel;
+            }
         }
 
         if (gameOverPanel != null)
+        {
             gameOverPanel.SetActive(false);
+        }
     }
 
     private void Update()
     {
         if (isGameOver) return;
+
         elapsedTime += Time.deltaTime;
     }
 
@@ -103,7 +108,9 @@ public class GameManager : MonoBehaviour
         Time.timeScale = 0f;
 
         if (gameOverPanel != null)
+        {
             gameOverPanel.SetActive(true);
+        }
     }
 
     public void RestartGame()

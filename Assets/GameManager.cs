@@ -16,6 +16,22 @@ public class GameManager : MonoBehaviour
     private float elapsedTime = 0f;
     private bool isGameOver = false;
 
+    [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
+    private static void EnsureInstanceExists()
+    {
+        if (Instance != null) return;
+
+        GameManager existing = FindFirstObjectByType<GameManager>();
+        if (existing != null)
+        {
+            Instance = existing;
+            return;
+        }
+
+        GameObject bootstrap = new GameObject("GameManager_Auto");
+        Instance = bootstrap.AddComponent<GameManager>();
+    }
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -25,6 +41,15 @@ public class GameManager : MonoBehaviour
         }
 
         Instance = this;
+
+        if (gameOverPanel == null)
+        {
+            GameObject fallbackPanel = GameObject.Find("GameOverPanel");
+            if (fallbackPanel != null)
+            {
+                gameOverPanel = fallbackPanel;
+            }
+        }
 
         if (gameOverPanel != null)
         {

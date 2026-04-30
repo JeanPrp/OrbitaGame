@@ -13,6 +13,11 @@ public class GameManager : MonoBehaviour
     [SerializeField] private float maxScrollSpeed = 6.0f;
     [SerializeField] private float speedIncreasePerSecond = 0.08f;
 
+    [Header("Progressão")]
+    [SerializeField] private string defaultPlayerName = "Player";
+    [SerializeField] private float scorePerSecond = 10f;
+    [SerializeField] private float currencyPerSecond = 2.5f;
+
     private float elapsedTime = 0f;
     private bool isGameOver = false;
 
@@ -75,11 +80,31 @@ public class GameManager : MonoBehaviour
         return isGameOver;
     }
 
+    public int GetCurrentScore()
+    {
+        return Mathf.Max(0, Mathf.RoundToInt(elapsedTime * scorePerSecond));
+    }
+
+    public int GetRunCurrencyReward()
+    {
+        return Mathf.Max(0, Mathf.RoundToInt(elapsedTime * currencyPerSecond));
+    }
+
     public void GameOver()
     {
         if (isGameOver) return;
 
         isGameOver = true;
+
+        int runScore = GetCurrentScore();
+        int reward = GetRunCurrencyReward();
+
+        if (MetaGameManager.Instance != null)
+        {
+            MetaGameManager.Instance.RegisterRunScore(defaultPlayerName, runScore);
+            MetaGameManager.Instance.AddCurrency(reward);
+        }
+
         Time.timeScale = 0f;
 
         if (gameOverPanel != null)

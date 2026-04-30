@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18a4bacc90a94c088f5ad44002b60485, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shipId: ship_default
+  displayName: Orbita I
+  unlockPrice: 0
+  previewSprite: {fileID: -590947418329346848, guid: 73c346358093d118ba692be545560030, type: 3}
+  availableColors:
+  - {r: 1.000000, g: 1.000000, b: 1.000000, a: 1.000000}
+  - {r: 0.498039, g: 0.858824, b: 1.000000, a: 1.000000}
+  - {r: 1.000000, g: 0.819608, b: 0.400000, a: 1.000000}

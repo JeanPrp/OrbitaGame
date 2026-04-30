@@ -21,6 +21,10 @@ public class PlayerShipController : MonoBehaviour
     [SerializeField] private float horizontalScreenPadding = 0.35f;
     [SerializeField] private float bottomMargin = 0.8f;
     [SerializeField] private float topMargin = 1.0f;
+    [SerializeField] private bool useRelativeViewportMargins = true;
+    [SerializeField, Range(0f, 0.45f)] private float horizontalViewportPadding = 0.08f;
+    [SerializeField, Range(0f, 0.45f)] private float bottomViewportMargin = 0.08f;
+    [SerializeField, Range(0f, 0.45f)] private float topViewportMargin = 0.10f;
 
     private Rigidbody2D rb;
     private Camera mainCam;
@@ -133,11 +137,25 @@ public class PlayerShipController : MonoBehaviour
         Vector2 pos = rb.position;
         Vector2 vel = rb.linearVelocity;
 
-        float minX = camPos.x - camWidth + horizontalScreenPadding;
-        float maxX = camPos.x + camWidth - horizontalScreenPadding;
+        float minX;
+        float maxX;
+        float minY;
+        float maxY;
 
-        float minY = camPos.y - camHeight + bottomMargin;
-        float maxY = camPos.y + camHeight - topMargin;
+        if (useRelativeViewportMargins)
+        {
+            minX = camPos.x - camWidth + (camWidth * 2f * horizontalViewportPadding);
+            maxX = camPos.x + camWidth - (camWidth * 2f * horizontalViewportPadding);
+            minY = camPos.y - camHeight + (camHeight * 2f * bottomViewportMargin);
+            maxY = camPos.y + camHeight - (camHeight * 2f * topViewportMargin);
+        }
+        else
+        {
+            minX = camPos.x - camWidth + horizontalScreenPadding;
+            maxX = camPos.x + camWidth - horizontalScreenPadding;
+            minY = camPos.y - camHeight + bottomMargin;
+            maxY = camPos.y + camHeight - topMargin;
+        }
 
         if (pos.x < minX)
         {

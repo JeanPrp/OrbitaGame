@@ -11,7 +11,7 @@ public class CustomizationUIController : MonoBehaviour
     [SerializeField] private Image shipPreviewImage;
     [SerializeField] private TMP_Text shipNameLabel;
     [SerializeField] private TMP_Text feedbackLabel;
-    [SerializeField] private int colorUnlockPrice = 120;
+    [SerializeField] private int colorUnlockPriceFallback = 120;
 
     private readonly List<ColorOptionView> spawnedColors = new();
 
@@ -45,7 +45,8 @@ public class CustomizationUIController : MonoBehaviour
                 bool isEquipped = profile.equippedColorHex == $"#{ColorUtility.ToHtmlStringRGBA(color)}";
 
                 ColorOptionView view = Instantiate(colorOptionPrefab, colorsContentRoot);
-                view.Bind(color, unlocked, isEquipped, colorUnlockPrice, this);
+                int colorPrice = GetColorUnlockPrice();
+                view.Bind(color, unlocked, isEquipped, colorPrice, this);
                 spawnedColors.Add(view);
             }
         }
@@ -62,7 +63,7 @@ public class CustomizationUIController : MonoBehaviour
 
         if (!unlocked)
         {
-            bool purchased = MetaGameManager.Instance.UnlockColor(color, colorUnlockPrice);
+            bool purchased = MetaGameManager.Instance.UnlockColor(color, GetColorUnlockPrice());
             if (!purchased)
             {
                 SetFeedback("Moedas insuficientes para desbloquear cor.");
@@ -92,6 +93,13 @@ public class CustomizationUIController : MonoBehaviour
     {
         if (feedbackLabel != null)
             feedbackLabel.text = message;
+    }
+
+
+    private int GetColorUnlockPrice()
+    {
+        EconomyConfig cfg = EconomyConfigService.Get();
+        return cfg != null ? cfg.ColorUnlockPrice : colorUnlockPriceFallback;
     }
 
     private void ClearColorViews()

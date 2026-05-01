@@ -32,12 +32,32 @@ public class MetaGameManager : MonoBehaviour
         BuildShipIndex();
         profile = PlayerProfileService.LoadOrCreate();
         EnsureProfileConsistency();
+        DailyMissionService.EnsureDailyState(profile);
         PlayerProfileService.Save(profile);
     }
 
     public IReadOnlyList<ShipDefinition> GetShipCatalog()
     {
         return shipCatalog;
+    }
+
+
+    public void RegisterRunForDailyMission(int score)
+    {
+        DailyMissionService.RegisterRun(profile, score);
+        PlayerProfileService.Save(profile);
+    }
+
+    public bool TryClaimDailyMissionReward(out int reward)
+    {
+        bool claimed = DailyMissionService.TryClaim(profile, out reward);
+        if (claimed)
+        {
+            profile.softCurrency += reward;
+            PlayerProfileService.Save(profile);
+        }
+
+        return claimed;
     }
 
     public bool TryUnlockShip(string shipId)
@@ -90,13 +110,22 @@ public class MetaGameManager : MonoBehaviour
         PlayerProfileService.Save(profile);
     }
 
+
+    public void SetPlayerName(string newName)
+    {
+        if (string.IsNullOrWhiteSpace(newName)) return;
+
+        profile.playerName = newName.Trim();
+        PlayerProfileService.Save(profile);
+    }
+
     public void RegisterRunScore(string playerName, int score)
     {
         profile.bestScore = Mathf.Max(profile.bestScore, score);
 
         RankEntryData entry = new RankEntryData
         {
-            playerName = string.IsNullOrWhiteSpace(playerName) ? "Player" : playerName,
+            playerName = string.IsNullOrWhiteSpace(playerName) ? profile.playerName : playerName,
             score = score,
             createdAtIsoUtc = DateTime.UtcNow.ToString("o")
         };
@@ -144,6 +173,9 @@ public class MetaGameManager : MonoBehaviour
 
         if (!profile.unlockedColorHexes.Contains("#FFFFFFFF"))
             profile.unlockedColorHexes.Insert(0, "#FFFFFFFF");
+
+        if (string.IsNullOrWhiteSpace(profile.playerName))
+            profile.playerName = "Player";
 
         if (string.IsNullOrWhiteSpace(profile.equippedShipId))
             profile.equippedShipId = "ship_default";

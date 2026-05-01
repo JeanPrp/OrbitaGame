@@ -7,6 +7,7 @@ public class PlayerProfileData
     public int schemaVersion = 1;
     public int softCurrency = 0;
     public int bestScore = 0;
+    public string playerName = "Player";
 
     public string equippedShipId = "ship_default";
     public string equippedColorHex = "#FFFFFFFF";
@@ -15,6 +16,11 @@ public class PlayerProfileData
     public List<string> unlockedColorHexes = new() { "#FFFFFFFF" };
 
     public List<RankEntryData> localRanking = new();
+
+    public string missionDateIsoUtc = "";
+    public int missionProgressScore = 0;
+    public bool missionClaimed = false;
+
 }
 
 [Serializable]

@@ -5,6 +5,7 @@ using UnityEngine;
 public class RankingUIController : MonoBehaviour
 {
     [SerializeField] private TMP_Text rankingText;
+    [SerializeField] private TMP_Text sourceText;
     [SerializeField] private int maxRows = 10;
 
     private void OnEnable()
@@ -16,17 +17,23 @@ public class RankingUIController : MonoBehaviour
     {
         if (rankingText == null) return;
 
-        if (MetaGameManager.Instance == null)
+        if (LeaderboardService.Instance == null)
         {
             rankingText.text = "Ranking indisponível.";
             return;
         }
 
-        List<RankEntryData> rows = MetaGameManager.Instance.Profile.localRanking;
+        rankingText.text = "Carregando ranking...";
 
+        LeaderboardService.Instance.FetchTopScores(maxRows, OnRankingLoaded);
+    }
+
+    private void OnRankingLoaded(List<RankEntryData> rows, bool fromRemote)
+    {
         if (rows == null || rows.Count == 0)
         {
             rankingText.text = "Sem pontuações ainda. Jogue para entrar no ranking!";
+            if (sourceText != null) sourceText.text = "Fonte: local";
             return;
         }
 
@@ -40,5 +47,8 @@ public class RankingUIController : MonoBehaviour
         }
 
         rankingText.text = builder.ToString();
+
+        if (sourceText != null)
+            sourceText.text = fromRemote ? "Fonte: online" : "Fonte: local";
     }
 }

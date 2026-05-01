@@ -13,6 +13,7 @@ public class MainMenuUIController : MonoBehaviour
     [Header("Labels")]
     [SerializeField] private TMP_Text currencyLabel;
     [SerializeField] private TMP_Text bestScoreLabel;
+    [SerializeField] private TMP_Text playerNameLabel;
 
     [Header("Scenes")]
     [SerializeField] private string gameplaySceneName = "SceneGame";
@@ -54,12 +55,16 @@ public class MainMenuUIController : MonoBehaviour
         if (MetaGameManager.Instance == null) return;
 
         PlayerProfileData profile = MetaGameManager.Instance.Profile;
+        if (profile == null) return;
 
         if (currencyLabel != null)
             currencyLabel.text = $"Moedas: {profile.softCurrency}";
 
         if (bestScoreLabel != null)
             bestScoreLabel.text = $"Recorde: {profile.bestScore}";
+
+        if (playerNameLabel != null)
+            playerNameLabel.text = string.IsNullOrWhiteSpace(profile.playerName) ? "Player" : profile.playerName;
     }
 
     private void SetPanels(GameObject active)

@@ -105,8 +105,9 @@ public class GameManager : MonoBehaviour
 
         if (MetaGameManager.Instance != null)
         {
-            string playerName = MetaGameManager.Instance.Profile != null
-                ? MetaGameManager.Instance.Profile.playerName
+            PlayerProfileData profile = MetaGameManager.Instance.Profile;
+            string playerName = profile != null && !string.IsNullOrWhiteSpace(profile.playerName)
+                ? profile.playerName
                 : defaultPlayerName;
 
             MetaGameManager.Instance.RegisterRunScore(playerName, runScore);

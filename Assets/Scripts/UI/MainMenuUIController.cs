@@ -55,6 +55,7 @@ public class MainMenuUIController : MonoBehaviour
         if (MetaGameManager.Instance == null) return;
 
         PlayerProfileData profile = MetaGameManager.Instance.Profile;
+        if (profile == null) return;
 
         if (currencyLabel != null)
             currencyLabel.text = $"Moedas: {profile.softCurrency}";
@@ -63,7 +64,7 @@ public class MainMenuUIController : MonoBehaviour
             bestScoreLabel.text = $"Recorde: {profile.bestScore}";
 
         if (playerNameLabel != null)
-            playerNameLabel.text = profile.playerName;
+            playerNameLabel.text = string.IsNullOrWhiteSpace(profile.playerName) ? "Player" : profile.playerName;
     }
 
     private void SetPanels(GameObject active)

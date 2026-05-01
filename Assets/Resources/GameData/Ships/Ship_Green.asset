@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18a4bacc90a94c088f5ad44002b60485, type: 3}
+  m_Name: Ship_Green
+  m_EditorClassIdentifier: 
+  shipId: ship_green
+  displayName: Orbita III
+  unlockPrice: 600
+  previewSprite: {fileID: 1746991664267116445, guid: 6fe44a97f38ae995dbe069d2afe666db, type: 3}
+  availableColors:
+  - {r: 1.000000, g: 1.000000, b: 1.000000, a: 1.000000}
+  - {r: 0.584314, g: 0.835294, b: 0.698039, a: 1.000000}
+  - {r: 1.000000, g: 0.901961, b: 0.427451, a: 1.000000}
